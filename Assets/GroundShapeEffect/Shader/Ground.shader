@@ -1,4 +1,4 @@
-﻿Shader "Unlit/Ground"
+﻿Shader "Twink/AnimalCrossing/Ground"
 {
     Properties
     {
