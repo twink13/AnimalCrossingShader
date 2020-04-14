@@ -329,6 +329,9 @@ MonoBehaviour:
   m_HitLayers:
     serializedVersion: 2
     m_Bits: 256
+  m_CanvasTexture: {fileID: 0}
+  m_CanvasSize: 16
+  m_CanvasMaterial: {fileID: 2100000, guid: d44c76c4d5c46b44fa2f72abc8684869, type: 2}
 --- !u!4 &1042724318
 Transform:
   m_ObjectHideFlags: 0
@@ -394,7 +397,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: d44c76c4d5c46b44fa2f72abc8684869, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
