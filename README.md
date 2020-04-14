@@ -3,8 +3,11 @@ Some interesting effect
 
 # Gournd with star shape
 ---
-Effect: 
-![avatar](Docs/GroundShapeEffect.png)
 
-In game:
+Target:
+
 ![avatar](Docs/GroundShapeInGame.png)
+
+Effect: 
+
+![avatar](Docs/GroundShapeEffect.png)
