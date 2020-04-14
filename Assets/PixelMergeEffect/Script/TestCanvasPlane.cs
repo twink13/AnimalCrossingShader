@@ -43,6 +43,7 @@ public class TestCanvasPlane : MonoBehaviour
     private void DrawTextureAtPos(Vector2Int pos)
     {
         m_CanvasTexture.SetPixel(pos.x, pos.y, Color.red);
+        m_CanvasTexture.Apply();
         Debug.Log("DrawTextureAtPos! pos = " + pos);
     }
 
