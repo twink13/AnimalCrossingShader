@@ -1,5 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Net;
+using Unity.Collections;
 using UnityEngine;
 
 public class TestCanvasPlane : MonoBehaviour
@@ -16,7 +18,7 @@ public class TestCanvasPlane : MonoBehaviour
     {
         m_Camera = m_Camera != null ? m_Camera : Camera.main;
 
-        m_CanvasTexture = new Texture2D(m_CanvasSize, m_CanvasSize);
+        m_CanvasTexture = new Texture2D(m_CanvasSize, m_CanvasSize, TextureFormat.ARGB32, false, true);
         m_CanvasTexture.filterMode = FilterMode.Point;
 
         m_CanvasMaterial.SetTexture("_MainTex", m_CanvasTexture);
@@ -42,9 +44,13 @@ public class TestCanvasPlane : MonoBehaviour
 
     private void DrawTextureAtPos(Vector2Int pos)
     {
-        m_CanvasTexture.SetPixel(pos.x, pos.y, Color.red);
+        //Debug.Log("DrawTextureAtPos! pos = " + pos);
+
+        byte[] rgbData = m_CanvasTexture.GetRawTextureData();
+        // a, r, g, b
+        rgbData[(pos.y * m_CanvasSize + pos.x) * 4 + 1] = 0xFF;
+        m_CanvasTexture.LoadRawTextureData(rgbData);
         m_CanvasTexture.Apply();
-        Debug.Log("DrawTextureAtPos! pos = " + pos);
     }
 
     private static Vector2Int Uv2Pos(Vector2 uv, int size)
