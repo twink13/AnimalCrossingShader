@@ -6,9 +6,6 @@
     }
     SubShader
     {
-        // No culling or depth
-        Cull Off ZWrite Off ZTest Always
-
         Pass
         {
             CGPROGRAM
@@ -42,7 +39,12 @@
             fixed4 frag (v2f i) : SV_Target
             {
                 fixed4 col = tex2D(_MainTex, i.uv);
-                return int(col.r & 1);
+                int xxx = (int(col.r) >> 0) & 1;
+
+                fixed4 result = 0;
+                result.a = 1;
+                result.r = xxx;
+                return result;
             }
             ENDCG
         }
