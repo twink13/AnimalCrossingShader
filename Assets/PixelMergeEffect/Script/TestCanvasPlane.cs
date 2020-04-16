@@ -46,11 +46,19 @@ public class TestCanvasPlane : MonoBehaviour
     {
         //Debug.Log("DrawTextureAtPos! pos = " + pos);
 
-        byte[] rgbData = m_CanvasTexture.GetRawTextureData();
+        NativeArray<uint> rawData = m_CanvasTexture.GetRawTextureData<uint>();
         // a, r, g, b
-        rgbData[(pos.y * m_CanvasSize + pos.x) * 4 + 1] = 0xFF;
-        m_CanvasTexture.LoadRawTextureData(rgbData);
+        // b, g, r, a
+        // todo: check big-ending
+        rawData[(pos.y * m_CanvasSize + pos.x)] = 0x0000FFFF;
+        m_CanvasTexture.LoadRawTextureData<uint>(rawData);
         m_CanvasTexture.Apply();
+
+        //byte[] rgbData = m_CanvasTexture.GetRawTextureData();
+        //// a, r, g, b
+        //rgbData[(pos.y * m_CanvasSize + pos.x) * 4 + 1] = 0xFF;
+        //m_CanvasTexture.LoadRawTextureData(rgbData);
+        //m_CanvasTexture.Apply();
     }
 
     private static Vector2Int Uv2Pos(Vector2 uv, int size)
