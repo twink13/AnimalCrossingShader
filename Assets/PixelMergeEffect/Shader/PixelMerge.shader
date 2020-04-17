@@ -3,6 +3,7 @@
     Properties
     {
         _MainTex ("Texture", 2D) = "white" {}
+		_TestBitScroll ("Test Bit Scroll", Range(0, 8)) = 0
     }
     SubShader
     {
@@ -35,15 +36,16 @@
             }
 
             sampler2D _MainTex;
+			uint _TestBitScroll;
 
             fixed4 frag (v2f i) : SV_Target
             {
                 fixed4 col = tex2D(_MainTex, i.uv);
-                int xxx = (int(col.r) >> 0) & 1;
+                uint xxx = floor(col.r * 255.0 + 0.5);
 
                 fixed4 result = 0;
                 result.a = 1;
-                result.r = xxx;
+                result.r = (xxx >> _TestBitScroll) & 1;
                 return result;
             }
             ENDCG

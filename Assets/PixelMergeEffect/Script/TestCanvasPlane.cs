@@ -56,7 +56,7 @@ public class TestCanvasPlane : MonoBehaviour
 
         byte[] rgbData = m_CanvasTexture.GetRawTextureData();
         // a, r, g, b
-        rgbData[(pos.y * m_CanvasSize + pos.x) * 4 + 1] = 0xFF;
+        rgbData[(pos.y * m_CanvasSize + pos.x) * 4 + 1] = 0xaa;
         m_CanvasTexture.LoadRawTextureData(rgbData);
         m_CanvasTexture.Apply();
     }
