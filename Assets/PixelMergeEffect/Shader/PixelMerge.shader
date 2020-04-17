@@ -3,6 +3,7 @@
     Properties
     {
         _MainTex ("Texture", 2D) = "white" {}
+        _IDTex ("ID Texture", 2D) = "white" {}
 		_TestBitScroll ("Test Bit Scroll", Range(0, 8)) = 0
     }
     SubShader
@@ -36,6 +37,7 @@
             }
 
             sampler2D _MainTex;
+            sampler2D _IDTex;
 			uint _TestBitScroll;
 
             fixed4 frag (v2f i) : SV_Target
@@ -46,6 +48,13 @@
                 fixed4 result = 0;
                 result.a = 1;
                 result.r = (xxx >> _TestBitScroll) & 1;
+
+
+                fixed4 idPix = tex2D(_IDTex, i.uv);
+                uint id = floor(idPix.a * 255.0 + 0.5);
+                fixed idGray = id / 9;
+                result.r = (id >> _TestBitScroll) & 1;
+
                 return result;
             }
             ENDCG
