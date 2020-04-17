@@ -41,7 +41,7 @@
             fixed4 frag (v2f i) : SV_Target
             {
                 fixed4 col = tex2D(_MainTex, i.uv);
-                uint xxx = floor(col.r * 255.0 + 0.5);
+                uint xxx = floor(col.a * 255.0 + 0.5);
 
                 fixed4 result = 0;
                 result.a = 1;

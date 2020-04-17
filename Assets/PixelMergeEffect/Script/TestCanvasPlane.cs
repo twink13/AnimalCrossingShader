@@ -18,7 +18,7 @@ public class TestCanvasPlane : MonoBehaviour
     {
         m_Camera = m_Camera != null ? m_Camera : Camera.main;
 
-        m_CanvasTexture = new Texture2D(m_CanvasSize, m_CanvasSize, TextureFormat.ARGB32, false, true);
+        m_CanvasTexture = new Texture2D(m_CanvasSize, m_CanvasSize, TextureFormat.Alpha8, false, true);
         m_CanvasTexture.filterMode = FilterMode.Point;
 
         m_CanvasMaterial.SetTexture("_MainTex", m_CanvasTexture);
@@ -46,20 +46,77 @@ public class TestCanvasPlane : MonoBehaviour
     {
         //Debug.Log("DrawTextureAtPos! pos = " + pos);
 
-        //NativeArray<uint> rawData = m_CanvasTexture.GetRawTextureData<uint>();
-        //// a, r, g, b
-        //// b, g, r, a
-        //// todo: check big-ending
-        //rawData[(pos.y * m_CanvasSize + pos.x)] = 0x000001FF;
-        //m_CanvasTexture.LoadRawTextureData<uint>(rawData);
-        //m_CanvasTexture.Apply();
-
         byte[] rgbData = m_CanvasTexture.GetRawTextureData();
-        // a, r, g, b
-        rgbData[(pos.y * m_CanvasSize + pos.x) * 4 + 1] = 0xaa;
+        rgbData[(pos.y * m_CanvasSize + pos.x) + 1] = 0xaa;
         m_CanvasTexture.LoadRawTextureData(rgbData);
         m_CanvasTexture.Apply();
     }
+
+    //============================================================================================================
+    // pos
+    //============================================================================================================
+
+    // 7 8 9
+    // 4 · 6
+    // 1 2 3
+    private Vector2Int GetNeighborPos(Vector2Int pos, int neighborId)
+    {
+        switch (neighborId)
+        {
+            case 1:
+                pos.x += -1;
+                pos.y += -1;
+                break;
+            case 2:
+                pos.x += 0;
+                pos.y += -1;
+                break;
+            case 3:
+                pos.x += +1;
+                pos.y += -1;
+                break;
+            case 4:
+                pos.x += -1;
+                pos.y += 0;
+                break;
+            case 5:
+                pos.x += 0;
+                pos.y += 0;
+                break;
+            case 6:
+                pos.x += +1;
+                pos.y += 0;
+                break;
+            case 7:
+                pos.x += -1;
+                pos.y += +1;
+                break;
+            case 8:
+                pos.x += 0;
+                pos.y += +1;
+                break;
+            case 9:
+                pos.x += +1;
+                pos.y += +1;
+                break;
+            default:
+                pos.x += 0;
+                pos.y += 0;
+                break;
+        }
+        return CheckBound(pos);
+    }
+
+    private Vector2Int CheckBound(Vector2Int pos)
+    {
+        pos.x = Mathf.Clamp(pos.x, 0, m_CanvasSize - 1);
+        pos.y = Mathf.Clamp(pos.y, 0, m_CanvasSize - 1);
+        return pos;
+    }
+
+    //============================================================================================================
+    // static
+    //============================================================================================================
 
     private static Vector2Int Uv2Pos(Vector2 uv, int size)
     {
