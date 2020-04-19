@@ -36,24 +36,25 @@
                 return o;
             }
 
+            fixed4 _MainColors[16];
+
             sampler2D _MainTex;
+            float4 _MainTex_TexelSize;
             sampler2D _IDTex;
 			uint _TestBitScroll;
 
             fixed4 frag (v2f i) : SV_Target
             {
                 fixed4 col = tex2D(_MainTex, i.uv);
-                uint xxx = floor(col.a * 255.0 + 0.5);
+                uint code = floor(col.a * 255.0 + 0.5);
+
+                float2 idUv = i.uv * _MainTex_TexelSize.zw;
+                fixed4 idPix = tex2D(_IDTex, idUv);
+                uint id = floor(idPix.a * 255.0 + 0.5);
 
                 fixed4 result = 0;
                 result.a = 1;
-                result.r = (xxx >> _TestBitScroll) & 1;
-
-
-                fixed4 idPix = tex2D(_IDTex, i.uv);
-                uint id = floor(idPix.a * 255.0 + 0.5);
-                fixed idGray = id / 9;
-                result.r = (id >> _TestBitScroll) & 1;
+                result.r = (code >> id) & 1;
 
                 return result;
             }

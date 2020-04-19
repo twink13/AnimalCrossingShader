@@ -11,10 +11,12 @@ namespace Twink.AnimalCrossing
         public Camera m_Camera;
         public LayerMask m_HitLayers;
 
+
         public Texture2D m_CanvasTexture;
         public int m_CanvasSize = 16;
 
         public Material m_CanvasMaterial;
+        public Color[] m_MainColors;
 
         public Texture2D m_TestAreaIdTex;
 
@@ -26,7 +28,7 @@ namespace Twink.AnimalCrossing
             m_CanvasTexture.filterMode = FilterMode.Point;
 
             m_CanvasMaterial.SetTexture("_MainTex", m_CanvasTexture);
-
+            m_CanvasMaterial.SetColorArray("_MainColors", m_MainColors);
         }
 
         // Update is called once per frame
@@ -51,8 +53,8 @@ namespace Twink.AnimalCrossing
         {
             if (GUILayout.Button("Create ID tex"))
             {
-                m_TestAreaIdTex = CanvasUtil.CreateIDTex(128);
-                CanvasUtil.WritePngFile(m_TestAreaIdTex, "PixelMergeEffect/Texture/IDTex.png");
+                m_TestAreaIdTex = CanvasHelper.CreateIDTex(128);
+                CanvasHelper.WritePngFile(m_TestAreaIdTex, "PixelMergeEffect/Texture/IDTex.png");
             }
         }
 

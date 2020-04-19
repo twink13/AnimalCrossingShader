@@ -5,8 +5,12 @@ using UnityEngine;
 
 namespace Twink.AnimalCrossing
 {
-    public class CanvasUtil
+    public class CanvasHelper
     {
+        //============================================================================================================
+        // create id tex
+        //============================================================================================================
+
         public static Texture2D CreateIDTex(int size)
         {
             Texture2D tex = new Texture2D(size, size, TextureFormat.Alpha8, false, true);
@@ -28,11 +32,11 @@ namespace Twink.AnimalCrossing
                         continue;
                     }
 
-                    int sideId = CalcSideId(x, y, halfSize);
+                    int quadrantId = CalcQuadrantId(x, y, halfSize);
 
                     if (sum < conerSize)
                     {
-                        switch (sideId)
+                        switch (quadrantId)
                         {
                             case 1:
                                 rawData[y * size + x] = 0x01;
@@ -53,7 +57,7 @@ namespace Twink.AnimalCrossing
                     }
                     else
                     {
-                        switch (sideId)
+                        switch (quadrantId)
                         {
                             case 1:
                                 rawData[y * size + x] = 0x05;
@@ -81,33 +85,36 @@ namespace Twink.AnimalCrossing
             return tex;
         }
 
-        public static int CalcSideId(int x, int y, int halfSize)
+        public static int CalcQuadrantId(int x, int y, int halfSize)
         {
-            int sideId = 1;
+            int quadrantId = 1;
             if (x > halfSize)
             {
                 if (y > halfSize)
                 {
-                    sideId = 1;
+                    quadrantId = 1;
                 }
                 else
                 {
-                    sideId = 2;
+                    quadrantId = 2;
                 }
             }
             else
             {
                 if (y > halfSize)
                 {
-                    sideId = 4;
+                    quadrantId = 4;
                 }
                 else
                 {
-                    sideId = 3;
+                    quadrantId = 3;
                 }
             }
-            return sideId;
+            return quadrantId;
         }
+        //============================================================================================================
+        // write png
+        //============================================================================================================
 
         public static void WritePngFile(Texture2D tex, string relativePath)
         {
