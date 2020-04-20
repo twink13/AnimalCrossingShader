@@ -28,7 +28,7 @@ namespace Twink.AnimalCrossing
                     int sum = Mathf.Abs(x - halfSize) + Mathf.Abs(y - halfSize);
                     if (sum < halfSize)
                     {
-                        rawData[y * size + x] = 0x00;
+                        rawData[y * size + x] = (byte)AreaID.DIR_5;
                         continue;
                     }
 
@@ -39,19 +39,19 @@ namespace Twink.AnimalCrossing
                         switch (quadrantId)
                         {
                             case 1:
-                                rawData[y * size + x] = 0x01;
+                                rawData[y * size + x] = (byte)AreaID.DIR_9_BIG;
                                 break;
                             case 2:
-                                rawData[y * size + x] = 0x02;
+                                rawData[y * size + x] = (byte)AreaID.DIR_3_BIG;
                                 break;
                             case 3:
-                                rawData[y * size + x] = 0x03;
+                                rawData[y * size + x] = (byte)AreaID.DIR_1_BIG;
                                 break;
                             case 4:
-                                rawData[y * size + x] = 0x04;
+                                rawData[y * size + x] = (byte)AreaID.DIR_7_BIG;
                                 break;
                             default:
-                                rawData[y * size + x] = 0x00;
+                                rawData[y * size + x] = (byte)AreaID.DIR_5;
                                 break;
                         }
                     }
@@ -60,19 +60,19 @@ namespace Twink.AnimalCrossing
                         switch (quadrantId)
                         {
                             case 1:
-                                rawData[y * size + x] = 0x05;
+                                rawData[y * size + x] = (byte)AreaID.DIR_9_SMALL;
                                 break;
                             case 2:
-                                rawData[y * size + x] = 0x06;
+                                rawData[y * size + x] = (byte)AreaID.DIR_3_SMALL;
                                 break;
                             case 3:
-                                rawData[y * size + x] = 0x07;
+                                rawData[y * size + x] = (byte)AreaID.DIR_1_SMALL;
                                 break;
                             case 4:
-                                rawData[y * size + x] = 0x08;
+                                rawData[y * size + x] = (byte)AreaID.DIR_7_SMALL;
                                 break;
                             default:
-                                rawData[y * size + x] = 0x00;
+                                rawData[y * size + x] = (byte)AreaID.DIR_5;
                                 break;
                         }
                     }

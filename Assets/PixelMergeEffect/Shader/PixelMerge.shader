@@ -45,16 +45,32 @@
 
             fixed4 frag (v2f i) : SV_Target
             {
+                // get main code
                 fixed4 col = tex2D(_MainTex, i.uv);
-                uint code = floor(col.a * 255.0 + 0.5);
+                uint4 codes = floor(col * 255.0 + 0.5);
 
-                float2 idUv = i.uv * _MainTex_TexelSize.zw;
-                fixed4 idPix = tex2D(_IDTex, idUv);
-                uint id = floor(idPix.a * 255.0 + 0.5);
+                // get area id
+                float2 IDUV = i.uv * _MainTex_TexelSize.zw;
+                fixed4 IDCol = tex2D(_IDTex, IDUV);
+                uint ID = floor(IDCol.a * 255.0 + 0.5);
+
+                int mainMask = (ID >> 3) & 1;
+                fixed4 mainColor = _MainColors[codes.g & 0x0f];
+
+                fixed4 color = 0;
+
+                // 0
+                int colorSelectionMask0 = (codes.a >> ID) & 1;
+                int colorIndex0 = codes.g >> 4;
+                color += _MainColors[colorIndex0] * colorSelectionMask0;
+
+                // 1
+                int colorSelectionMask1 = (codes.r >> ID) & 1;
+                int colorIndex1 = codes.b & 0x0f;
+                color += _MainColors[colorIndex1] * colorSelectionMask1;
 
                 fixed4 result = 0;
-                result.a = 1;
-                result.r = (code >> id) & 1;
+                result = lerp(color, mainColor, mainMask);
 
                 return result;
             }

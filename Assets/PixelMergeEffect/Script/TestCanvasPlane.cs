@@ -20,19 +20,20 @@ namespace Twink.AnimalCrossing
 
         public Texture2D m_TestAreaIdTex;
 
-        private Tex2DCanvas _canvas;
+        private Tex2DCanvas _Canvas;
 
         void Awake()
         {
             m_Camera = m_Camera != null ? m_Camera : Camera.main;
 
-            m_CanvasTexture = new Texture2D(m_CanvasSize, m_CanvasSize, TextureFormat.Alpha8, false, true);
+            m_CanvasTexture = new Texture2D(m_CanvasSize, m_CanvasSize, TextureFormat.ARGB32, false, true);
             m_CanvasTexture.filterMode = FilterMode.Point;
 
             m_CanvasMaterial.SetTexture("_MainTex", m_CanvasTexture);
             m_CanvasMaterial.SetColorArray("_MainColors", m_MainColors);
 
-            _canvas = new Tex2DCanvas(m_CanvasTexture);
+            _Canvas = new Tex2DCanvas(m_CanvasTexture);
+            _Canvas.Flush();
         }
 
         // Update is called once per frame
@@ -66,10 +67,14 @@ namespace Twink.AnimalCrossing
         {
             //Debug.Log("DrawTextureAtPos! pos = " + pos);
 
-            byte[] rgbData = m_CanvasTexture.GetRawTextureData();
-            rgbData[pos.y * m_CanvasSize + pos.x] = 0xaa;
-            m_CanvasTexture.LoadRawTextureData(rgbData);
-            m_CanvasTexture.Apply();
+            CanvasCell cell = _Canvas.GetCellByPos(pos.x, pos.y);
+            cell.data0 = 0b_0000_1111;
+            cell.data1 = 0b_1111_0000;
+            cell.data2 = 0b_0001_0001;
+            cell.data3 = 0b_0000_0000;
+            cell.dirty = true;
+
+            _Canvas.Flush();
         }
 
         //============================================================================================================

@@ -9,7 +9,10 @@ namespace Twink.AnimalCrossing
         public Tex2DCanvas owner;
         public int x;
         public int y;
-        public byte data;
+        public byte data0 = 0xFF;
+        public byte data1 = 0x00;
+        public byte data2 = 0x00;
+        public byte data3 = 0x00;
 
         public bool dirty;
 
@@ -23,7 +26,10 @@ namespace Twink.AnimalCrossing
         }
         public void UpdateData()
         {
-            owner.SetData(x, y, data);
+            owner.SetData(x, y, data0, 0);
+            owner.SetData(x, y, data1, 1);
+            owner.SetData(x, y, data2, 2);
+            owner.SetData(x, y, data3, 3);
             dirty = false;
         }
 

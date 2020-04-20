@@ -38,6 +38,19 @@ namespace Twink.AnimalCrossing
             }
         }
 
+        public void Flush()
+        {
+            for (int i = 0; i < _cells.Length; i++)
+            {
+                CanvasCell cell = _cells[i];
+                if (cell.dirty)
+                {
+                    cell.UpdateData();
+                }
+            }
+            UpdateData();
+        }
+
         public byte GetData(int x, int y, int slot = 0)
         {
             return _texRawData[(y * _tex.width + x) * _pixelByteCount + slot];
@@ -52,6 +65,16 @@ namespace Twink.AnimalCrossing
         public CanvasCell GetCellByPos(int x, int y)
         {
             return _cells[y * _tex.width + x];
+        }
+
+        //============================================================================================================
+        // private function
+        //============================================================================================================
+
+        private void UpdateData()
+        {
+            _tex.LoadRawTextureData(_texRawData);
+            _tex.Apply();
         }
 
         //============================================================================================================
