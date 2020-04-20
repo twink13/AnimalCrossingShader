@@ -49,5 +49,27 @@ namespace Twink.AnimalCrossing
                     return 1;
             }
         }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="areaID"></param>
+        /// <param name="flag">0 or 1</param>
+        /// <returns></returns>
+        public static byte SetBitAtArea(byte data, AreaID areaID, byte bit)
+        {
+            return SetBitAtPosition(data, (byte)areaID, bit);
+        }
+
+        public static byte SetBitAtPosition(byte data, byte position, byte bit)
+        {
+            byte mask = (byte)(1 << position);
+            if (bit == 0)
+            {
+                mask ^= 0xFF;
+                return data &= mask;
+            }
+            return data |= mask;
+        }
     }
 }

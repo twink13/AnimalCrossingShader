@@ -10,15 +10,15 @@ namespace Twink.AnimalCrossing
     // 1 2 3
     public enum AreaID
     {
-        DIR_5 = 0,
-        DIR_9_BIG = 1,
-        DIR_3_BIG = 2,
-        DIR_1_BIG = 3,
-        DIR_7_BIG = 4,
-        DIR_9_SMALL = 5,
-        DIR_3_SMALL = 6,
-        DIR_1_SMALL = 7,
-        DIR_7_SMALL = 8,
+        //DIR_5 = 0,
+        DIR_9_BIG = 0,
+        DIR_3_BIG = 1,
+        DIR_1_BIG = 2,
+        DIR_7_BIG = 3,
+        DIR_9_SMALL = 4,
+        DIR_3_SMALL = 5,
+        DIR_1_SMALL = 6,
+        DIR_7_SMALL = 7,
     };
 
     public class CanvasConst

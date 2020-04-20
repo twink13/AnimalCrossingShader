@@ -4,16 +4,31 @@ using UnityEngine;
 
 namespace Twink.AnimalCrossing
 {
-    public struct CanvasCell
+    public class CanvasCell
     {
         public Tex2DCanvas owner;
         public int x;
         public int y;
+        public byte data;
 
         public bool dirty;
 
         //============================================================================================================
         // public function
+        //============================================================================================================
+
+        public void Test()
+        {
+
+        }
+        public void UpdateData()
+        {
+            owner.SetData(x, y, data);
+            dirty = false;
+        }
+
+        //============================================================================================================
+        // private function
         //============================================================================================================
 
         //============================================================================================================
@@ -30,7 +45,7 @@ namespace Twink.AnimalCrossing
             cell.owner = owner;
             cell.x = x;
             cell.y = y;
-            cell.dirty = false;
+            cell.dirty = true;
             return cell;
         }
     }

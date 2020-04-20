@@ -20,6 +20,8 @@ namespace Twink.AnimalCrossing
 
         public Texture2D m_TestAreaIdTex;
 
+        private Tex2DCanvas _canvas;
+
         void Awake()
         {
             m_Camera = m_Camera != null ? m_Camera : Camera.main;
@@ -29,6 +31,8 @@ namespace Twink.AnimalCrossing
 
             m_CanvasMaterial.SetTexture("_MainTex", m_CanvasTexture);
             m_CanvasMaterial.SetColorArray("_MainColors", m_MainColors);
+
+            _canvas = new Tex2DCanvas(m_CanvasTexture);
         }
 
         // Update is called once per frame
