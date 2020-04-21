@@ -9,7 +9,7 @@ namespace Twink.AnimalCrossing
         public Tex2DCanvas owner;
         public int x;
         public int y;
-        public byte data0 = 0xFF;
+        public byte data0 = 0x00;
         public byte data1 = 0x00;
         public byte data2 = 0x00;
         public byte data3 = 0x00;

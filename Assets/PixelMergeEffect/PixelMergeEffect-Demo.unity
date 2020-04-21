@@ -330,12 +330,14 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 256
   m_CanvasTexture: {fileID: 0}
-  m_CanvasSize: 32
+  m_CanvasSize: 16
   m_CanvasMaterial: {fileID: 2100000, guid: d44c76c4d5c46b44fa2f72abc8684869, type: 2}
   m_MainColors:
   - {r: 0.9093313, g: 1, b: 0, a: 0}
-  - {r: 0, g: 0.17089081, b: 1, a: 0}
-  - {r: 1, g: 0, b: 0.40201616, a: 0}
+  - {r: 0, g: 0.17089081, b: 1, a: 1}
+  - {r: 1, g: 0, b: 0.40201616, a: 1}
+  - {r: 0.38768244, g: 0.5640599, b: 0.6792453, a: 1}
+  - {r: 0.1764706, g: 0, b: 0.40201616, a: 1}
   m_TestAreaIdTex: {fileID: 0}
 --- !u!4 &1042724318
 Transform:

@@ -49,28 +49,31 @@
                 fixed4 col = tex2D(_MainTex, i.uv);
                 uint4 codes = floor(col * 255.0 + 0.5);
 
+				// set colors map
+				uint colorIDByCornerIDList[4];
+				colorIDByCornerIDList[0] = codes.r & 0x0f;
+				colorIDByCornerIDList[1] = codes.r >> 4;
+				colorIDByCornerIDList[2] = codes.g & 0x0f;
+				colorIDByCornerIDList[3] = codes.g >> 4;
+
                 // get area id
                 float2 IDUV = i.uv * _MainTex_TexelSize.zw;
                 fixed4 IDCol = tex2D(_IDTex, IDUV);
                 uint ID = floor(IDCol.a * 255.0 + 0.5);
 
+				// calc corner ID
+				// 3 0
+				// 2 1
+				uint cornerID = floor(ID / 2);
+				fixed4 cornerColor = _MainColors[colorIDByCornerIDList[cornerID]];
+				int colorSelectionMask = (codes.a >> ID) & 1;
+				cornerColor = cornerColor * colorSelectionMask;
+
                 int mainMask = (ID >> 3) & 1;
-                fixed4 mainColor = _MainColors[codes.g & 0x0f];
-
-                fixed4 color = 0;
-
-                // 0
-                int colorSelectionMask0 = (codes.a >> ID) & 1;
-                int colorIndex0 = codes.g >> 4;
-                color += _MainColors[colorIndex0] * colorSelectionMask0;
-
-                // 1
-                int colorSelectionMask1 = (codes.r >> ID) & 1;
-                int colorIndex1 = codes.b & 0x0f;
-                color += _MainColors[colorIndex1] * colorSelectionMask1;
+                fixed4 mainColor = _MainColors[codes.b & 0x0f];
 
                 fixed4 result = 0;
-                result = lerp(color, mainColor, mainMask);
+                result = lerp(cornerColor, mainColor, mainMask);
 
                 return result;
             }

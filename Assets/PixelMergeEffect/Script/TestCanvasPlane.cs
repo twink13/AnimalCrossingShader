@@ -68,9 +68,9 @@ namespace Twink.AnimalCrossing
             //Debug.Log("DrawTextureAtPos! pos = " + pos);
 
             CanvasCell cell = _Canvas.GetCellByPos(pos.x, pos.y);
-            cell.data0 = 0b_0000_1111;
-            cell.data1 = 0b_1111_0000;
-            cell.data2 = 0b_0001_0001;
+            cell.data0 = 0b_1010_1010;
+            cell.data1 = 0b_0010_0001;
+            cell.data2 = 0b_0100_0011;
             cell.data3 = 0b_0000_0000;
             cell.dirty = true;
 
