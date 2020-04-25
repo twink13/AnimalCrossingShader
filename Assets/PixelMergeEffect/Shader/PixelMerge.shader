@@ -4,6 +4,7 @@
     {
         _MainTex ("Texture", 2D) = "white" {}
         _IDTex ("ID Texture", 2D) = "white" {}
+        _PixelMaskTex ("Pixel Mask Texture", 2D) = "white" {}
 		_TestBitScroll ("Test Bit Scroll", Range(0, 8)) = 0
     }
     SubShader
@@ -41,7 +42,47 @@
             sampler2D _MainTex;
             float4 _MainTex_TexelSize;
             sampler2D _IDTex;
+            sampler2D _PixelMaskTex;
 			uint _TestBitScroll;
+
+            uint colorIDByCornerIDList[5];
+            uint styleIDByCornerIDList[4];
+            inline void DecodeCodes(uint4 codes)
+            {
+                // a -> r -> g -> b
+                // a: color0(4bit)      color1(4bit)
+                // r: color2(4bit)      color3(4bit)
+                // g: colorMain(4bit)   styleID0(3bit) styleID1_part1(1bit)
+                // a: styleID1_part2(2bit) styleID2(3bit) styleID3(3bit)
+
+				colorIDByCornerIDList[0] = codes.a >> 4;
+				colorIDByCornerIDList[1] = codes.a & 0x0f;
+				colorIDByCornerIDList[2] = codes.r >> 4;
+				colorIDByCornerIDList[3] = codes.r & 0x0f;
+				colorIDByCornerIDList[4] = codes.g >> 4;
+
+                styleIDByCornerIDList[0] = (codes.g >> 1) & 0x7;
+                styleIDByCornerIDList[1] = ((codes.g & 0x3) << 2) | (codes.a >> 6);
+                styleIDByCornerIDList[2] = (codes.a >> 3) & 0x7;
+                styleIDByCornerIDList[3] = codes.a & 0x7;
+            }
+
+            // this is one corner data (will reset 4 times)
+            fixed cornerVisiblityByStyleID[6];
+            inline void DecodeMask(fixed4 mask)
+            {
+                cornerVisiblityByStyleID[0] = 0;
+                cornerVisiblityByStyleID[1] = mask.r;
+                cornerVisiblityByStyleID[2] = mask.g;
+                cornerVisiblityByStyleID[3] = mask.b;
+                cornerVisiblityByStyleID[4] = mask.a;
+                cornerVisiblityByStyleID[5] = max(mask.b, mask.a);
+            }
+
+            inline CalcCornerVisiblity(uint CornerID)
+            {
+                // todo
+            }
 
             fixed4 frag (v2f i) : SV_Target
             {
@@ -49,17 +90,12 @@
                 fixed4 col = tex2D(_MainTex, i.uv);
                 uint4 codes = floor(col * 255.0 + 0.5);
 
-				// set colors map
-				uint colorIDByCornerIDList[4];
-				colorIDByCornerIDList[0] = codes.r & 0x0f;
-				colorIDByCornerIDList[1] = codes.r >> 4;
-				colorIDByCornerIDList[2] = codes.g & 0x0f;
-				colorIDByCornerIDList[3] = codes.g >> 4;
+                // get mask
+                float2 maskUV = i.uv * _MainTex_TexelSize.zw;
+                fixed4 mask = tex2D(_PixelMaskTex, maskUV);
 
-                // get area id
-                float2 IDUV = i.uv * _MainTex_TexelSize.zw;
-                fixed4 IDCol = tex2D(_IDTex, IDUV);
-                uint ID = floor(IDCol.a * 255.0 + 0.5);
+                DecodeCodes(codes);
+                DecodeMask(mask)
 
 				// calc corner ID
 				// 3 0
