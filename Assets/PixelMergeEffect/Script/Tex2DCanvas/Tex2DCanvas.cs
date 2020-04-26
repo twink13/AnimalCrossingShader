@@ -62,9 +62,28 @@ namespace Twink.AnimalCrossing
             _dirty = true;
         }
 
+        public CanvasCell GetCellByPos(Vector2Int dir)
+        {
+            return _cells[dir.y * _tex.width + dir.x];
+        }
+
         public CanvasCell GetCellByPos(int x, int y)
         {
+            if (x < 0 || x > _tex.width || y < 0 || y > _tex.height)
+            {
+                return null;
+            }
             return _cells[y * _tex.width + x];
+        }
+
+        public CanvasCell GetNeighborCell(CanvasCell centerCell, int neighborID)
+        {
+            CanvasCell neighborCell = GetCellByPos(centerCell.position + CanvasUtil.GetDirByNeighborID(neighborID));
+            if (neighborCell == null)
+            {
+                return CanvasCell.Universal;
+            }
+            return neighborCell;
         }
 
         //============================================================================================================

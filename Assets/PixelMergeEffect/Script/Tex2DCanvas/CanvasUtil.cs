@@ -5,8 +5,24 @@ using UnityEngine;
 
 namespace Twink.AnimalCrossing
 {
-    public class CanvasUtil
+    public static class CanvasUtil
     {
+        private static Vector2Int[] _DirByNeighborIDList;
+
+        static CanvasUtil()
+        {
+            _DirByNeighborIDList = new Vector2Int[10];
+            _DirByNeighborIDList[0] = new Vector2Int(0, 0); // no use
+            _DirByNeighborIDList[1] = new Vector2Int(-1, -1);
+            _DirByNeighborIDList[2] = new Vector2Int(0, -1);
+            _DirByNeighborIDList[3] = new Vector2Int(1, -1);
+            _DirByNeighborIDList[4] = new Vector2Int(-1, 0);
+            _DirByNeighborIDList[5] = new Vector2Int(0, 0);
+            _DirByNeighborIDList[6] = new Vector2Int(1, 0);
+            _DirByNeighborIDList[7] = new Vector2Int(-1, 1);
+            _DirByNeighborIDList[8] = new Vector2Int(0, 1);
+            _DirByNeighborIDList[9] = new Vector2Int(1, 1);
+        }
         public static int GetTextureFormatByteCount(TextureFormat format)
         {
             switch (format)
@@ -75,6 +91,11 @@ namespace Twink.AnimalCrossing
         public static byte OverrideByteWithMask(byte oldData, byte newData, byte mask)
         {
             return (byte)((oldData & (mask ^ 0x00)) | oldData);
+        }
+
+        public static Vector2Int GetDirByNeighborID(int neighborID)
+        {
+            return _DirByNeighborIDList[neighborID];
         }
     }
 }

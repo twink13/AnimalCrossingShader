@@ -6,6 +6,8 @@ namespace Twink.AnimalCrossing
 {
     public class CanvasCell
     {
+        private static CanvasCell _universal;
+
         public Tex2DCanvas owner;
         public int x;
         public int y;
@@ -78,13 +80,18 @@ namespace Twink.AnimalCrossing
             set { data3 = CanvasUtil.OverrideByteWithMask(data3, (byte)(value), 0b_0000_0111); }
         }
 
+        public Vector2Int position
+        {
+            get { return new Vector2Int(x, y); }
+        }
+
         //============================================================================================================
         // public function
         //============================================================================================================
 
-        public void Test()
+        public void Resolve()
         {
-
+            
         }
         public void UpdateData()
         {
@@ -115,6 +122,18 @@ namespace Twink.AnimalCrossing
             cell.y = y;
             cell.dirty = true;
             return cell;
+        }
+
+        public static CanvasCell Universal
+        {
+            get
+            {
+                if (_universal == null)
+                {
+                    _universal = Create(null, -1, -1);
+                }
+                return _universal;
+            }
         }
     }
 }
