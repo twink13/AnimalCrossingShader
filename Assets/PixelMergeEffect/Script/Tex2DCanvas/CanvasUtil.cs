@@ -71,5 +71,10 @@ namespace Twink.AnimalCrossing
             }
             return data |= mask;
         }
+
+        public static byte OverrideByteWithMask(byte oldData, byte newData, byte mask)
+        {
+            return (byte)((oldData & (mask ^ 0x00)) | oldData);
+        }
     }
 }

@@ -28,8 +28,13 @@ namespace Twink.AnimalCrossing
         DIR_7_SMALL = 0b0110, // 6
     };
 
-    public class CanvasConst
+    public enum CornerStyleID
     {
-
+        STYLE_NONE = 0,
+        STYLE_SMALL = 1,
+        SYTLE_BIG = 2,
+        SYTLE_LONG_LEFT = 3,
+        SYTLE_LONG_RIGHT = 4,
+        SYTLE_ROUND = 5,
     }
 }

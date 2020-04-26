@@ -17,6 +17,68 @@ namespace Twink.AnimalCrossing
         public bool dirty;
 
         //============================================================================================================
+        // getter setter
+        //============================================================================================================
+
+        public uint color0
+        {
+            get { return (uint)(data0 >> 4); }
+            set { data0 = CanvasUtil.OverrideByteWithMask(data0, (byte)(value << 4), 0b_1111_0000); }
+        }
+
+        public uint color1
+        {
+            get { return (uint)(data0 & 0b_0000_1111); }
+            set { data0 = CanvasUtil.OverrideByteWithMask(data0, (byte)(value), 0b_0000_1111); }
+        }
+
+        public uint color2
+        {
+            get { return (uint)(data1 >> 4); }
+            set { data1 = CanvasUtil.OverrideByteWithMask(data1, (byte)(value << 4), 0b_1111_0000); }
+        }
+
+        public uint color3
+        {
+            get { return (uint)(data1 & 0b_0000_1111); }
+            set { data1 = CanvasUtil.OverrideByteWithMask(data1, (byte)(value), 0b_0000_1111); }
+        }
+
+        public uint mainColor
+        {
+            get { return (uint)(data2 >> 4); }
+            set { data2 = CanvasUtil.OverrideByteWithMask(data2, (byte)(value << 4), 0b_1111_0000); }
+        }
+
+        public uint style0
+        {
+            get { return (uint)((data2 & 0b_0000_1110) >> 1); }
+            set { data2 = CanvasUtil.OverrideByteWithMask(data2, (byte)(value << 1), 0b_0000_1110); }
+        }
+
+        public uint style1
+        {
+            get { return (uint)(((data2 & 0b_0000_0001) << 2) | (data3 >> 6)); }
+            set
+            {
+                data2 = CanvasUtil.OverrideByteWithMask(data2, (byte)(value >> 2), 0b_0000_0001);
+                data3 = CanvasUtil.OverrideByteWithMask(data3, (byte)(value << 6), 0b_1100_0000);
+            }
+        }
+
+        public uint style2
+        {
+            get { return (uint)((data3 & 0b_0011_1000) >> 3); }
+            set { data3 = CanvasUtil.OverrideByteWithMask(data3, (byte)(value << 3), 0b_0011_1000); }
+        }
+
+        public uint style3
+        {
+            get { return (uint)(data3 & 0b_0000_0111); }
+            set { data3 = CanvasUtil.OverrideByteWithMask(data3, (byte)(value), 0b_0000_0111); }
+        }
+
+        //============================================================================================================
         // public function
         //============================================================================================================
 
