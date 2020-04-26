@@ -53,7 +53,7 @@
                 // a: color0(4bit)      color1(4bit)
                 // r: color2(4bit)      color3(4bit)
                 // g: colorMain(4bit)   styleID0(3bit) styleID1_part1(1bit)
-                // a: styleID1_part2(2bit) styleID2(3bit) styleID3(3bit)
+                // b: styleID1_part2(2bit) styleID2(3bit) styleID3(3bit)
 
 				colorIDByCornerIDList[0] = codes.a >> 4;
 				colorIDByCornerIDList[1] = codes.a & 0x0f;
@@ -62,9 +62,9 @@
 				colorIDByCornerIDList[4] = codes.g >> 4;
 
                 styleIDByCornerIDList[0] = (codes.g >> 1) & 0x7;
-                styleIDByCornerIDList[1] = ((codes.g & 0x3) << 2) | (codes.a >> 6);
-                styleIDByCornerIDList[2] = (codes.a >> 3) & 0x7;
-                styleIDByCornerIDList[3] = codes.a & 0x7;
+                styleIDByCornerIDList[1] = ((codes.g & 0x3) << 2) | (codes.b >> 6);
+                styleIDByCornerIDList[2] = (codes.b >> 3) & 0x7;
+                styleIDByCornerIDList[3] = codes.b & 0x7;
             }
 
             // this is one corner data (will reset 4 times)
@@ -79,37 +79,50 @@
                 cornerVisiblityByStyleID[5] = max(mask.b, mask.a);
             }
 
-            inline CalcCornerVisiblity(uint CornerID)
+            inline fixed CalcCornerVisiblity(uint cornerID, float2 maskUV)
             {
+				fixed4 mask = tex2D(_PixelMaskTex, maskUV);
+				DecodeMask(mask);
+
                 // todo
+				return cornerVisiblityByStyleID[3];
             }
+
+			// x
+			inline uint CalcCornerID(float2 uv)
+			{
+				uint ID1 = step(uv.y, 0.5);
+				uint ID2 = step(uv.x * uv.y, 0);
+				return ID1 * 2 + ID2;
+			}
 
             fixed4 frag (v2f i) : SV_Target
             {
                 // get main code
                 fixed4 col = tex2D(_MainTex, i.uv);
                 uint4 codes = floor(col * 255.0 + 0.5);
+				DecodeCodes(codes);
 
                 // get mask
                 float2 maskUV = i.uv * _MainTex_TexelSize.zw;
-                fixed4 mask = tex2D(_PixelMaskTex, maskUV);
 
-                DecodeCodes(codes);
-                DecodeMask(mask)
+				// calc visibility
+				fixed visibility0 = CalcCornerVisiblity(0, maskUV);
+				fixed visibility1 = CalcCornerVisiblity(1, float2(1 - maskUV.y, maskUV.x));
+				fixed visibility2 = CalcCornerVisiblity(2, float2(1 - maskUV.x, 1 - maskUV.y));
+				fixed visibility3 = CalcCornerVisiblity(3, float2(maskUV.y, 1 - maskUV.x));
+				fixed visibilityTotal = min(1, visibility0 + visibility1 + visibility2 + visibility3);
 
-				// calc corner ID
-				// 3 0
-				// 2 1
-				uint cornerID = floor(ID / 2);
-				fixed4 cornerColor = _MainColors[colorIDByCornerIDList[cornerID]];
-				int colorSelectionMask = (codes.a >> ID) & 1;
-				cornerColor = cornerColor * colorSelectionMask;
+				fixed4 cornerColor = 0;
+				cornerColor += visibility0 * _MainColors[colorIDByCornerIDList[0]];
+				cornerColor += visibility1 * _MainColors[colorIDByCornerIDList[1]];
+				cornerColor += visibility2 * _MainColors[colorIDByCornerIDList[2]];
+				cornerColor += visibility3 * _MainColors[colorIDByCornerIDList[3]];
 
-                int mainMask = (ID >> 3) & 1;
-                fixed4 mainColor = _MainColors[codes.b & 0x0f];
 
+				fixed4 mainColor = _MainColors[colorIDByCornerIDList[4]];
                 fixed4 result = 0;
-                result = lerp(cornerColor, mainColor, mainMask);
+                result = lerp(mainColor, cornerColor, visibilityTotal);
 
                 return result;
             }
