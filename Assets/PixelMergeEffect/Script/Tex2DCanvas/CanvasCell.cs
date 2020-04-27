@@ -18,6 +18,8 @@ namespace Twink.AnimalCrossing
 
         public bool dirty;
 
+        private CanvasCell[] _neighborCells;
+
         //============================================================================================================
         // getter setter
         //============================================================================================================
@@ -89,6 +91,11 @@ namespace Twink.AnimalCrossing
         // public function
         //============================================================================================================
 
+        public void Init()
+        {
+            CacheNeighbors();
+        }
+
         public void Resolve()
         {
             
@@ -105,6 +112,29 @@ namespace Twink.AnimalCrossing
         //============================================================================================================
         // private function
         //============================================================================================================
+
+        private void CacheNeighbors()
+        {
+            _neighborCells = new CanvasCell[(int)NeighborID.TOTAL];
+            for (int i = (int)NeighborID.NEIGHBOR_1; i < (int)NeighborID.TOTAL; i++)
+            {
+                _neighborCells[i] = owner.GetNeighborCell(this, (NeighborID)i);
+            }
+        }
+
+        private CanvasCell GetNeighborCell(NeighborID neighborID)
+        {
+            if (_neighborCells == null)
+            {
+                CacheNeighbors();
+            }
+            return _neighborCells[(int)neighborID];
+        }
+
+        private CanvasCell GetRelativeNeighborCell(CornerID cornerID, NeighborID neighborID)
+        {
+
+        }
 
         //============================================================================================================
         // static factory

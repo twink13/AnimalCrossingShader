@@ -8,20 +8,31 @@ namespace Twink.AnimalCrossing
     public static class CanvasUtil
     {
         private static Vector2Int[] _DirByNeighborIDList;
+        private static NeighborID[] _NeighborIDToRightDownCornerNeighborIDList;
 
         static CanvasUtil()
         {
-            _DirByNeighborIDList = new Vector2Int[10];
-            _DirByNeighborIDList[0] = new Vector2Int(0, 0); // no use
-            _DirByNeighborIDList[1] = new Vector2Int(-1, -1);
-            _DirByNeighborIDList[2] = new Vector2Int(0, -1);
-            _DirByNeighborIDList[3] = new Vector2Int(1, -1);
-            _DirByNeighborIDList[4] = new Vector2Int(-1, 0);
-            _DirByNeighborIDList[5] = new Vector2Int(0, 0);
-            _DirByNeighborIDList[6] = new Vector2Int(1, 0);
-            _DirByNeighborIDList[7] = new Vector2Int(-1, 1);
-            _DirByNeighborIDList[8] = new Vector2Int(0, 1);
-            _DirByNeighborIDList[9] = new Vector2Int(1, 1);
+            _DirByNeighborIDList = new Vector2Int[(int)NeighborID.TOTAL];
+            _DirByNeighborIDList[(int)NeighborID.NEIGHBOR_1] = new Vector2Int(-1, -1);
+            _DirByNeighborIDList[(int)NeighborID.NEIGHBOR_2] = new Vector2Int(0, -1);
+            _DirByNeighborIDList[(int)NeighborID.NEIGHBOR_3] = new Vector2Int(1, -1);
+            _DirByNeighborIDList[(int)NeighborID.NEIGHBOR_4] = new Vector2Int(-1, 0);
+            _DirByNeighborIDList[(int)NeighborID.NEIGHBOR_5] = new Vector2Int(0, 0);
+            _DirByNeighborIDList[(int)NeighborID.NEIGHBOR_6] = new Vector2Int(1, 0);
+            _DirByNeighborIDList[(int)NeighborID.NEIGHBOR_7] = new Vector2Int(-1, 1);
+            _DirByNeighborIDList[(int)NeighborID.NEIGHBOR_8] = new Vector2Int(0, 1);
+            _DirByNeighborIDList[(int)NeighborID.NEIGHBOR_9] = new Vector2Int(1, 1);
+
+            _NeighborIDToRightDownCornerNeighborIDList = new NeighborID[(int)NeighborID.TOTAL];
+            _NeighborIDToRightDownCornerNeighborIDList[(int)NeighborID.NEIGHBOR_3] = NeighborID.NEIGHBOR_1;
+            _NeighborIDToRightDownCornerNeighborIDList[(int)NeighborID.NEIGHBOR_6] = NeighborID.NEIGHBOR_2;
+            _NeighborIDToRightDownCornerNeighborIDList[(int)NeighborID.NEIGHBOR_9] = NeighborID.NEIGHBOR_3;
+            _NeighborIDToRightDownCornerNeighborIDList[(int)NeighborID.NEIGHBOR_2] = NeighborID.NEIGHBOR_4;
+            _NeighborIDToRightDownCornerNeighborIDList[(int)NeighborID.NEIGHBOR_5] = NeighborID.NEIGHBOR_5;
+            _NeighborIDToRightDownCornerNeighborIDList[(int)NeighborID.NEIGHBOR_8] = NeighborID.NEIGHBOR_6;
+            _NeighborIDToRightDownCornerNeighborIDList[(int)NeighborID.NEIGHBOR_1] = NeighborID.NEIGHBOR_7;
+            _NeighborIDToRightDownCornerNeighborIDList[(int)NeighborID.NEIGHBOR_4] = NeighborID.NEIGHBOR_8;
+            _NeighborIDToRightDownCornerNeighborIDList[(int)NeighborID.NEIGHBOR_7] = NeighborID.NEIGHBOR_9;
         }
         public static int GetTextureFormatByteCount(TextureFormat format)
         {
@@ -93,9 +104,27 @@ namespace Twink.AnimalCrossing
             return (byte)((oldData & (mask ^ 0x00)) | oldData);
         }
 
-        public static Vector2Int GetDirByNeighborID(int neighborID)
+        public static Vector2Int GetDirByNeighborID(NeighborID neighborID)
         {
-            return _DirByNeighborIDList[neighborID];
+            return _DirByNeighborIDList[(int)neighborID];
+        }
+
+        public static NeighborID GetRelativeNeighborID(CornerID cornerID, NeighborID neighborID)
+        {
+            switch (cornerID)
+            {
+                case CornerID.RIGHT_UP:
+                    return neighborID;
+                case CornerID.RIGHT_DOWN:
+                    return _NeighborIDToRightDownCornerNeighborIDList[(int)neighborID];
+                case CornerID.LEFT_DOWN:
+                    return (NeighborID)((int)NeighborID.TOTAL - 1 - (int)neighborID);
+                case CornerID.LEFT_UP:
+                    return (NeighborID)((int)NeighborID.TOTAL - 1 - (int)_NeighborIDToRightDownCornerNeighborIDList[(int)neighborID]);
+                default:
+                    break;
+            }
+            return neighborID;
         }
     }
 }

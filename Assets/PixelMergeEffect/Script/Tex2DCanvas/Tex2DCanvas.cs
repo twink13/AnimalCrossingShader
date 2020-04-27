@@ -76,7 +76,7 @@ namespace Twink.AnimalCrossing
             return _cells[y * _tex.width + x];
         }
 
-        public CanvasCell GetNeighborCell(CanvasCell centerCell, int neighborID)
+        public CanvasCell GetNeighborCell(CanvasCell centerCell, NeighborID neighborID)
         {
             CanvasCell neighborCell = GetCellByPos(centerCell.position + CanvasUtil.GetDirByNeighborID(neighborID));
             if (neighborCell == null)
