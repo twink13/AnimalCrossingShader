@@ -105,6 +105,29 @@ namespace Twink.AnimalCrossing
             return (byte)((oldData & (mask ^ 0xFF)) | newData);
         }
 
+        // rightShift: [0, 7]
+        public static byte ShiftRepeat(byte data, int rightShift)
+        {
+            byte mask = (byte)(int)(Mathf.Pow(2, rightShift) - 1);
+            byte rightSection = (byte)(data & mask);
+            byte result = (byte)((data >> rightShift) | (data << (8 - rightShift)));
+            return result;
+        }
+
+        // position: [0, 7]
+        public static byte GetBitAtRightPosition(byte data, int position)
+        {
+            return (byte)((data >> position) & 1);
+        }
+
+        // position: [0, 7]
+        public static byte SetBitAtRightPosition(byte data, int position, byte bit)
+        {
+            byte mask = (byte)(int)(Mathf.Pow(2, position));
+            byte newData = (byte)(bit << position);
+            return OverrideByteWithMask(data, newData, mask);
+        }
+
         public static Vector2Int GetDirByNeighborID(uint neighborID)
         {
             return _DirByNeighborIDList[neighborID];
