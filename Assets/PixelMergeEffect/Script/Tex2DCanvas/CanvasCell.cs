@@ -109,31 +109,46 @@ namespace Twink.AnimalCrossing
             dirty = false;
         }
 
+        public void SetDefaultData()
+        {
+            mainColor = 0;
+            color0 = 1;
+            color1 = 0;
+            color2 = 0;
+            color3 = 0;
+            style0 = 3;
+            style1 = 0;
+            style2 = 0;
+            style3 = 0;
+
+            dirty = true;
+        }
+
         //============================================================================================================
         // private function
         //============================================================================================================
 
         private void CacheNeighbors()
         {
-            _neighborCells = new CanvasCell[(int)NeighborID.TOTAL];
-            for (int i = (int)NeighborID.NEIGHBOR_1; i < (int)NeighborID.TOTAL; i++)
+            _neighborCells = new CanvasCell[NeighborID.TOTAL];
+            for (uint i = NeighborID.NEIGHBOR_1; i < NeighborID.TOTAL; i++)
             {
-                _neighborCells[i] = owner.GetNeighborCell(this, (NeighborID)i);
+                _neighborCells[i] = owner.GetNeighborCell(this, i);
             }
         }
 
-        private CanvasCell GetNeighborCell(NeighborID neighborID)
+        private CanvasCell GetNeighborCell(uint neighborID)
         {
             if (_neighborCells == null)
             {
                 CacheNeighbors();
             }
-            return _neighborCells[(int)neighborID];
+            return _neighborCells[neighborID];
         }
 
-        private CanvasCell GetRelativeNeighborCell(CornerID cornerID, NeighborID neighborID)
+        private CanvasCell GetRelativeNeighborCell(uint cornerID, uint neighborID)
         {
-
+            return GetNeighborCell(CanvasUtil.GetRelativeNeighborID(cornerID, neighborID));
         }
 
         //============================================================================================================

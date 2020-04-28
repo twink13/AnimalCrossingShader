@@ -32,10 +32,18 @@ namespace Twink.AnimalCrossing
             {
                 for (int y = 0; y < _tex.height; y++)
                 {
-                    _cells[y * _tex.width + x] = CanvasCell.Create(this, x, y);
+                    CanvasCell cell = CanvasCell.Create(this, x, y);
+                    _cells[y * _tex.width + x] = cell;
 
+                    cell.Init();
+                    
+                    // test
+                    cell.SetDefaultData();
                 }
             }
+
+            // test
+            Flush();
         }
 
         public void Flush()
@@ -62,21 +70,21 @@ namespace Twink.AnimalCrossing
             _dirty = true;
         }
 
-        public CanvasCell GetCellByPos(Vector2Int dir)
+        public CanvasCell GetCellByPos(Vector2Int pos)
         {
-            return _cells[dir.y * _tex.width + dir.x];
+            return GetCellByPos(pos.x, pos.y);
         }
 
         public CanvasCell GetCellByPos(int x, int y)
         {
-            if (x < 0 || x > _tex.width || y < 0 || y > _tex.height)
+            if (x < 0 || x >= _tex.width || y < 0 || y >= _tex.height)
             {
                 return null;
             }
             return _cells[y * _tex.width + x];
         }
 
-        public CanvasCell GetNeighborCell(CanvasCell centerCell, NeighborID neighborID)
+        public CanvasCell GetNeighborCell(CanvasCell centerCell, uint neighborID)
         {
             CanvasCell neighborCell = GetCellByPos(centerCell.position + CanvasUtil.GetDirByNeighborID(neighborID));
             if (neighborCell == null)

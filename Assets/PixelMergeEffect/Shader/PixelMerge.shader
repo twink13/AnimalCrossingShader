@@ -85,7 +85,8 @@
 				DecodeMask(mask);
 
                 // todo
-				return cornerVisiblityByStyleID[3];
+                uint styleID = styleIDByCornerIDList[cornerID];
+				return cornerVisiblityByStyleID[styleID];
             }
 
 			// x
@@ -104,7 +105,7 @@
 				DecodeCodes(codes);
 
                 // get mask
-                float2 maskUV = i.uv * _MainTex_TexelSize.zw;
+                float2 maskUV = (i.uv * _MainTex_TexelSize.zw) % 1;
 
 				// calc visibility
 				fixed visibility0 = CalcCornerVisiblity(0, maskUV);

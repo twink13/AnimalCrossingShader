@@ -8,31 +8,31 @@ namespace Twink.AnimalCrossing
     public static class CanvasUtil
     {
         private static Vector2Int[] _DirByNeighborIDList;
-        private static NeighborID[] _NeighborIDToRightDownCornerNeighborIDList;
+        private static uint[] _NeighborIDToRightDownCornerNeighborIDList;
 
         static CanvasUtil()
         {
-            _DirByNeighborIDList = new Vector2Int[(int)NeighborID.TOTAL];
-            _DirByNeighborIDList[(int)NeighborID.NEIGHBOR_1] = new Vector2Int(-1, -1);
-            _DirByNeighborIDList[(int)NeighborID.NEIGHBOR_2] = new Vector2Int(0, -1);
-            _DirByNeighborIDList[(int)NeighborID.NEIGHBOR_3] = new Vector2Int(1, -1);
-            _DirByNeighborIDList[(int)NeighborID.NEIGHBOR_4] = new Vector2Int(-1, 0);
-            _DirByNeighborIDList[(int)NeighborID.NEIGHBOR_5] = new Vector2Int(0, 0);
-            _DirByNeighborIDList[(int)NeighborID.NEIGHBOR_6] = new Vector2Int(1, 0);
-            _DirByNeighborIDList[(int)NeighborID.NEIGHBOR_7] = new Vector2Int(-1, 1);
-            _DirByNeighborIDList[(int)NeighborID.NEIGHBOR_8] = new Vector2Int(0, 1);
-            _DirByNeighborIDList[(int)NeighborID.NEIGHBOR_9] = new Vector2Int(1, 1);
+            _DirByNeighborIDList = new Vector2Int[NeighborID.TOTAL];
+            _DirByNeighborIDList[NeighborID.NEIGHBOR_1] = new Vector2Int(-1, -1);
+            _DirByNeighborIDList[NeighborID.NEIGHBOR_2] = new Vector2Int(0, -1);
+            _DirByNeighborIDList[NeighborID.NEIGHBOR_3] = new Vector2Int(1, -1);
+            _DirByNeighborIDList[NeighborID.NEIGHBOR_4] = new Vector2Int(-1, 0);
+            _DirByNeighborIDList[NeighborID.NEIGHBOR_5] = new Vector2Int(0, 0);
+            _DirByNeighborIDList[NeighborID.NEIGHBOR_6] = new Vector2Int(1, 0);
+            _DirByNeighborIDList[NeighborID.NEIGHBOR_7] = new Vector2Int(-1, 1);
+            _DirByNeighborIDList[NeighborID.NEIGHBOR_8] = new Vector2Int(0, 1);
+            _DirByNeighborIDList[NeighborID.NEIGHBOR_9] = new Vector2Int(1, 1);
 
-            _NeighborIDToRightDownCornerNeighborIDList = new NeighborID[(int)NeighborID.TOTAL];
-            _NeighborIDToRightDownCornerNeighborIDList[(int)NeighborID.NEIGHBOR_3] = NeighborID.NEIGHBOR_1;
-            _NeighborIDToRightDownCornerNeighborIDList[(int)NeighborID.NEIGHBOR_6] = NeighborID.NEIGHBOR_2;
-            _NeighborIDToRightDownCornerNeighborIDList[(int)NeighborID.NEIGHBOR_9] = NeighborID.NEIGHBOR_3;
-            _NeighborIDToRightDownCornerNeighborIDList[(int)NeighborID.NEIGHBOR_2] = NeighborID.NEIGHBOR_4;
-            _NeighborIDToRightDownCornerNeighborIDList[(int)NeighborID.NEIGHBOR_5] = NeighborID.NEIGHBOR_5;
-            _NeighborIDToRightDownCornerNeighborIDList[(int)NeighborID.NEIGHBOR_8] = NeighborID.NEIGHBOR_6;
-            _NeighborIDToRightDownCornerNeighborIDList[(int)NeighborID.NEIGHBOR_1] = NeighborID.NEIGHBOR_7;
-            _NeighborIDToRightDownCornerNeighborIDList[(int)NeighborID.NEIGHBOR_4] = NeighborID.NEIGHBOR_8;
-            _NeighborIDToRightDownCornerNeighborIDList[(int)NeighborID.NEIGHBOR_7] = NeighborID.NEIGHBOR_9;
+            _NeighborIDToRightDownCornerNeighborIDList = new uint[NeighborID.TOTAL];
+            _NeighborIDToRightDownCornerNeighborIDList[NeighborID.NEIGHBOR_3] = NeighborID.NEIGHBOR_1;
+            _NeighborIDToRightDownCornerNeighborIDList[NeighborID.NEIGHBOR_6] = NeighborID.NEIGHBOR_2;
+            _NeighborIDToRightDownCornerNeighborIDList[NeighborID.NEIGHBOR_9] = NeighborID.NEIGHBOR_3;
+            _NeighborIDToRightDownCornerNeighborIDList[NeighborID.NEIGHBOR_2] = NeighborID.NEIGHBOR_4;
+            _NeighborIDToRightDownCornerNeighborIDList[NeighborID.NEIGHBOR_5] = NeighborID.NEIGHBOR_5;
+            _NeighborIDToRightDownCornerNeighborIDList[NeighborID.NEIGHBOR_8] = NeighborID.NEIGHBOR_6;
+            _NeighborIDToRightDownCornerNeighborIDList[NeighborID.NEIGHBOR_1] = NeighborID.NEIGHBOR_7;
+            _NeighborIDToRightDownCornerNeighborIDList[NeighborID.NEIGHBOR_4] = NeighborID.NEIGHBOR_8;
+            _NeighborIDToRightDownCornerNeighborIDList[NeighborID.NEIGHBOR_7] = NeighborID.NEIGHBOR_9;
         }
         public static int GetTextureFormatByteCount(TextureFormat format)
         {
@@ -83,7 +83,7 @@ namespace Twink.AnimalCrossing
         /// <param name="areaID"></param>
         /// <param name="flag">0 or 1</param>
         /// <returns></returns>
-        public static byte SetBitAtArea(byte data, AreaID areaID, byte bit)
+        public static byte SetBitAtArea(byte data, uint areaID, byte bit)
         {
             return SetBitAtPosition(data, (byte)areaID, bit);
         }
@@ -101,26 +101,27 @@ namespace Twink.AnimalCrossing
 
         public static byte OverrideByteWithMask(byte oldData, byte newData, byte mask)
         {
-            return (byte)((oldData & (mask ^ 0x00)) | oldData);
+            //Debug.Log("oldData = " + oldData + ", newData = " + newData + ", mask = " + mask);
+            return (byte)((oldData & (mask ^ 0xFF)) | newData);
         }
 
-        public static Vector2Int GetDirByNeighborID(NeighborID neighborID)
+        public static Vector2Int GetDirByNeighborID(uint neighborID)
         {
-            return _DirByNeighborIDList[(int)neighborID];
+            return _DirByNeighborIDList[neighborID];
         }
 
-        public static NeighborID GetRelativeNeighborID(CornerID cornerID, NeighborID neighborID)
+        public static uint GetRelativeNeighborID(uint cornerID, uint neighborID)
         {
             switch (cornerID)
             {
                 case CornerID.RIGHT_UP:
                     return neighborID;
                 case CornerID.RIGHT_DOWN:
-                    return _NeighborIDToRightDownCornerNeighborIDList[(int)neighborID];
+                    return _NeighborIDToRightDownCornerNeighborIDList[neighborID];
                 case CornerID.LEFT_DOWN:
-                    return (NeighborID)((int)NeighborID.TOTAL - 1 - (int)neighborID);
+                    return (NeighborID.TOTAL - 1 - neighborID);
                 case CornerID.LEFT_UP:
-                    return (NeighborID)((int)NeighborID.TOTAL - 1 - (int)_NeighborIDToRightDownCornerNeighborIDList[(int)neighborID]);
+                    return _NeighborIDToRightDownCornerNeighborIDList[(NeighborID.TOTAL - 1 - neighborID)];
                 default:
                     break;
             }
