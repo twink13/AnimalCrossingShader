@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
+using System;
 
 namespace Twink.AnimalCrossing
 {
@@ -126,6 +127,11 @@ namespace Twink.AnimalCrossing
             byte mask = (byte)(int)(Mathf.Pow(2, position));
             byte newData = (byte)(bit << position);
             return OverrideByteWithMask(data, newData, mask);
+        }
+
+        public static string ByteToString(byte data)
+        {
+            return Convert.ToString(data, 2);
         }
 
         public static Vector2Int GetDirByNeighborID(uint neighborID)

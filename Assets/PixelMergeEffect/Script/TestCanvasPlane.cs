@@ -61,6 +61,11 @@ namespace Twink.AnimalCrossing
                 m_TestAreaIdTex = CanvasHelper.CreateIDTex(128);
                 CanvasHelper.WritePngFile(m_TestAreaIdTex, "PixelMergeEffect/Texture/IDTex.png");
             }
+            if (GUILayout.Button("Test show main styles"))
+            {
+                string mainStyleList = StyleDataCreatorUtils.CreateCachedMainStyleList();
+                Debug.Log("mainStyleList = " + mainStyleList);
+            }
         }
 
         private void DrawTextureAtPos(Vector2Int pos)

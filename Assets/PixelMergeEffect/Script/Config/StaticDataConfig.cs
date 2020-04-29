@@ -24,12 +24,12 @@ namespace Twink.AnimalCrossing
         // static
         //=========================================================================================
         
-        private static byte Rotate(byte data, uint cornerID)
+        public static byte Rotate(byte data, uint cornerID)
         {
             return CanvasUtil.ShiftRepeat(data, (int)cornerID * 2);
         }
 
-        private static byte Mirror(byte data, uint cornerID)
+        public static byte Mirror(byte data)
         {
             byte result = data;
             for (int i = 0; i < 7; i++)
