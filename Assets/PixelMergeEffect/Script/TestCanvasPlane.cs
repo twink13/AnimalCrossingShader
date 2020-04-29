@@ -66,6 +66,10 @@ namespace Twink.AnimalCrossing
                 string mainStyleList = StyleDataCreatorUtils.CreateCachedMainStyleList();
                 Debug.Log("mainStyleList = " + mainStyleList);
             }
+            if (GUILayout.Button("Test show cached config data"))
+            {
+                StyleDataCreatorUtils.CreateStyleConfigData();
+            }
         }
 
         private void DrawTextureAtPos(Vector2Int pos)
